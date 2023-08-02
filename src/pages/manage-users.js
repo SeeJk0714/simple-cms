@@ -1,34 +1,28 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-export default function ManagePosts() {
-    const [posts, setPosts] = useState([]);
+export default function ManageUsers() {
+    const [users, setUsers] = useState([]);
     useEffect(() => {
-        // 1. get posts from local storage
-        const posts = JSON.parse(localStorage.getItem("posts"));
-        // 2. dump it to posts state
-        setPosts(posts);
+        const users = JSON.parse(localStorage.getItem("users"));
+        setUsers(users);
     }, []);
 
-    const deletePost = (id) => {
-        // 1. use .filter to filter out the selected post
-        const newPosts = posts.filter((p) => parseInt(p.id) !== parseInt(id));
-        // 2. update the newposts into the storage
-        localStorage.setItem("posts", JSON.stringify(newPosts));
-        // 3. update the state
-        setPosts(newPosts);
+    const deleteUser = (id) => {
+        const newUsers = users.filter((p) => parseInt(p.id) !== parseInt(id));
+        localStorage.setItem("users", JSON.stringify(newUsers));
+        setUsers(newUsers);
     };
-
     return (
         <div className="container mx-auto my-5">
             <div className="d-flex justify-content-between align-items-center mb-2">
-                <h1 className="h1">Manage Posts</h1>
+                <h1 className="h1">Manage Users</h1>
                 <div className="text-end">
                     <Link
-                        to="/manage-posts-add"
+                        to="/manage-users-add"
                         className="btn btn-primary btn-sm"
                     >
-                        Add New Post
+                        Add New User
                     </Link>
                 </div>
             </div>
@@ -36,48 +30,37 @@ export default function ManagePosts() {
                 <table className="table">
                     <thead>
                         <tr>
-                            <th scope="col">Title</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
                             <th scope="col" className="text-end">
                                 Actions
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {posts
-                            ? posts.map((post) => {
+                        {users
+                            ? users.map((user) => {
                                   return (
-                                      <tr key={post.id}>
-                                          <td>{post.title}</td>
+                                      <tr key={user.id}>
+                                          <td>{user.name}</td>
+                                          <td>{user.email}</td>
                                           <td>
-                                              <span
-                                                  className={`badge ${
-                                                      post.status
-                                                          ? "bg-warning"
-                                                          : "bg-success"
-                                                  }`}
-                                              >
-                                                  {post.status}
+                                              <span className="badge bg-success">
+                                                  {user.role}
                                               </span>
                                           </td>
                                           <td className="text-end">
                                               <div className="buttons">
                                                   <Link
-                                                      to={`/post/${post.id}`}
-                                                      target="_blank"
-                                                      className="btn btn-primary btn-sm me-2 "
-                                                  >
-                                                      <i className="bi bi-eye"></i>
-                                                  </Link>
-                                                  <Link
-                                                      to={`/manage-posts-edit/${post.id}`}
-                                                      className="btn btn-secondary btn-sm me-2"
+                                                      to={`/manage-users-edit/${user.id}`}
+                                                      className="btn btn-success btn-sm me-2"
                                                   >
                                                       <i className="bi bi-pencil"></i>
                                                   </Link>
                                                   <button
                                                       onClick={() => {
-                                                          deletePost(post.id);
+                                                          deleteUser(user.id);
                                                       }}
                                                       className="btn btn-danger btn-sm"
                                                   >
